@@ -8,7 +8,6 @@ class Retention:
 
     def read_file_list(self):
         self.logger.info("Read file list")
-        self.ftpconn.cwd(self.settings["USEDIR"])
         return self.ftpconn.listdir()
 
     def remove_older_than(self, file_list, days):
