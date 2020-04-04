@@ -3,6 +3,14 @@ class Backup:
         self.logger = logger
         self.settings = config
 
+    def do_backup(self):
+        """
+        read backup rules and execute them
+        creates seperate files as tar.gz for every backup rule
+        :return:
+        """
+
+
     def send_to_backupserver(self) -> None:
         print("send to backupserver")
 

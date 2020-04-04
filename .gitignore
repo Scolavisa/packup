@@ -131,3 +131,4 @@ dmypy.json
 # added
 .idea
 etc/backup.conf
+etc/backupcommands.conf

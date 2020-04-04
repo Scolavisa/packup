@@ -7,11 +7,14 @@ Use `etc/backup.conf` to configure.
 ## deployment
 use pipenv to install and pipenv run to run the script
 ```
-pipen install
--- possibly in a cronjob
-cd projectdir && pipenv run dobackup.py
+# deploy / install
+pipenv install
+
+# possibly in a cronjob
+1 0 * * * * cd projectdir && pipenv run packup.py
 ```
 make sure you pipenv install with the same user that will be used for the cron command.
 
-### Copyright
-(C) Scolavisa VOF 2020
+The programm expects a backup directory that will receive all backup files and a transport dir that wil be used to compress and encrypt all files in the backupdir. The resulting file will be transported to the backupserver (sftp). Both directories need to be defined in the configuration (./etc/backup.conf)
+
+All backup commands are listed in ./etc/backupcommands. 
