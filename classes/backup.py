@@ -16,7 +16,7 @@ class Backup:
         creates seperate files as tar.gz for every backup rule
         :return:
         """
-        self.logger.info("Backups according to BU rules")
+        self.logger.info("Backups according to backup commands in /etc/backupcommands.conf")
         command_file = open('./etc/backupcommands.conf', 'r')
         for command in command_file:
             line = command.strip()

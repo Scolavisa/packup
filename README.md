@@ -1,5 +1,5 @@
 # Packup
-This project is used to create backups, encrypt the backup files package them and store them off-site through a sftp connection. 
+This project is used to create backups of databases and files, package them, encrypt the result and store it off-site through a sftp connection. 
 
 ## config
 Use `etc/backup.conf` to configure. 
@@ -11,7 +11,7 @@ Use pipenv to install and `pipenv run` to run the script
 pipenv install
 
 # possibly in a cronjob
-1 0 * * * * cd projectdir && pipenv run packup.py
+1 0 * * * cd projectdir && pipenv run python packup.py
 ```
 Make sure you pipenv install with the same user that will be used for the cron command.
 
