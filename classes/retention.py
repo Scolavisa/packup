@@ -6,14 +6,20 @@ class Retention:
         self.logger = logger
         self.settings = config
 
-    def read_file_list(self):
-        self.logger.info("Read file list")
-        return self.ftpconn.listdir()
 
-    def remove_older_than(self, file_list, days):
+    def remove_older_than(self, days) -> None:
+        """
+        Finds and deletes files older than the requested number of days
+        :param days: intended retention days
+        :return:
+        """
         self.logger.info("Read file list")
+        file_list = self.ftpconn.listdir()
+
         if self.settings["DRYRUN"] == "True":
             self.logger.info("Dryrun set to true, not deleting indicated files")
+
+        self.logger.info("Found {} files in the current server directory".format(len(file_list)))
 
         for file_name in file_list:
             # check if file should be deleted
@@ -27,7 +33,7 @@ class Retention:
                 diff = date.today() - date(year, month, day)
                 if diff.days >= days:
                     # delete this file
-                    self.logger.debug("File will be deleted")
+                    self.logger.info("File will be deleted")
                     if not self.settings["DRYRUN"] == "True":
                         self.ftpconn.remove(file_name)
                 else:
