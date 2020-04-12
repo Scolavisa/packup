@@ -37,14 +37,26 @@ def main():
     # Go to the correct directory for the duration of this connection
     sftp.cwd(FTPCRED["USEDIR"])
 
+    # Backup section
     Backup(sftp, logger=logging, config=config["BACKUP"])\
         .do_backup()\
         .package_backup()\
         .encrypt()\
         .send_to_backupserver()
 
-    Retention(sftp, logger=logging, config=FTPCRED)\
-        .remove_older_than(config["BACKUP"]["RETENTIONDAYS"])
+    # Retention section
+    if config["BACKUP"]["RETENTIONSCHEME"] == "OLDERTHANNROFDAYS" and \
+            config["BACKUP"]["RETENTIONDAYS"] is not None:
+        Retention(sftp, logger=logging, config=FTPCRED)\
+            .remove_older_than(config["BACKUP"]["RETENTIONDAYS"])
+
+    # elif: (todo next scheme)
+
+    # elif: (todo next scheme)
+
+    else:
+        logging.error("You do not have a valid retention configuration. Skipping retention check")
+
 
     # Close SFTP  connection
     sftp.close()

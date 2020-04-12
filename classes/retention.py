@@ -13,6 +13,7 @@ class Retention:
         :param days: intended retention days
         :return:
         """
+        self.logger.info("*** Retention scheme: remove older than {} days".format(days))
         self.logger.info("Read file list")
         file_list = self.ftpconn.listdir()
 
@@ -33,7 +34,7 @@ class Retention:
                 diff = date.today() - date(year, month, day)
                 if diff.days >= days:
                     # delete this file
-                    self.logger.info("File will be deleted")
+                    self.logger.info("File {} will be deleted".format(file_name))
                     if not self.settings["DRYRUN"] == "True":
                         self.ftpconn.remove(file_name)
                 else:
