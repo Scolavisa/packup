@@ -45,18 +45,17 @@ def main():
         .send_to_backupserver()
 
     # Retention section
-    if config["BACKUP"]["RETENTIONSCHEME"] == "OLDERTHANNROFDAYS" and \
-            config["BACKUP"]["RETENTIONDAYS"] is not None:
-        Retention(sftp, logger=logging, config=FTPCRED)\
-            .remove_older_than(config["BACKUP"]["RETENTIONDAYS"])
+    if config["BACKUP"]["RETENTIONSCHEME"] is None:
+        logging.info("Skipping retention, no scheme defined in config")
+    else :
+        if config["BACKUP"]["RETENTIONSCHEME"] == "OLDERTHANNROFDAYS" and \
+                config["BACKUP"]["RETENTIONDAYS"] is not None:
+            Retention(sftp, logger=logging, config=FTPCRED)\
+                .remove_older_than(config["BACKUP"]["RETENTIONDAYS"])
 
-    # elif: (todo next scheme)
+        # elif: (todo next scheme)
 
-    # elif: (todo next scheme)
-
-    else:
-        logging.error("You do not have a valid retention configuration. Skipping retention check")
-
+        # elif: (todo next scheme)
 
     # Close SFTP  connection
     sftp.close()
