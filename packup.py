@@ -45,7 +45,7 @@ def main():
         .send_to_backupserver()
 
     # Retention section
-    if config["BACKUP"]["RETENTIONSCHEME"] is None:
+    if config["BACKUP"]["RETENTIONSCHEME"] == 'NONE':
         logging.info("Skipping retention, no scheme defined in config")
     else :
         if config["BACKUP"]["RETENTIONSCHEME"] == "OLDERTHANNROFDAYS" and \
