@@ -11,6 +11,7 @@ Use `etc/backup.conf` to configure. The etc directory contains an example of the
 Most importantly: your config needs to have a BACKUPDIR and a TRANSPORTDIR. 
 - BACKUPDIR: this directory will contain your intermediate files, usu. packages of your backups. They are the result of your backupcommands (see below)
 - TRANSPORTDIR: this directory will be used to assemle everything in BACKUPDIR, encrypt it and send it to the backupserver.
+
 Both should be readable/writable by the script user (cron user) but not by the world.
   
 ### backup steps
