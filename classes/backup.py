@@ -46,7 +46,7 @@ class Backup:
         today = date.today()
         now = d1 = today.strftime("%Y-%m-%d")
         hostname = socket.gethostname()
-        line = "openssl aes-256-cbc -pbkdf2 -pass pass:{pw} -salt -in {transpdir}/{hostname}.backup.tar.gz -out {transpdir}/{hostname}.backup-{now}.tar.gz.aes".format(
+        line = "openssl aes-256-cbc -pbkdf2 -pass pass:{pw} -salt -in {transpdir}/{hostname}.backup.tar.gz -out {transpdir}/backup-{now}{hostname}.tar.gz.aes".format(
             pw=self.settings["ENCPW"],
             transpdir=self.settings["TRANSPORTDIR"],
             now=now,
