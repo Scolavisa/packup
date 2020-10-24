@@ -1,5 +1,5 @@
 # Packup
-This project is used to create backups of databases and files, package them, encrypt the result and store it off-site through an sftp connection. 
+This project is used to create backups of databases and files, package them, encrypt the result and store it off-site through an sftp connection
 
 ## Requirements
 The script is meant to be run on a server that has Python3 installed. To install and run the script we use pipenv. Please consult your taste of server to meet these requirements. You need enough diskspace on your server for the intermediate files. Lastly you need a backup server accessible by the production server through sftp. The script uses public/private key negotiation for access to the backupserver.
