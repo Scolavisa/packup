@@ -13,11 +13,15 @@ Most importantly: your config needs to have a BACKUPDIR and a TRANSPORTDIR.
 - TRANSPORTDIR: this directory will be used to assemle everything in BACKUPDIR, encrypt it and send it to the backupserver.
 
 Both should be readable/writable by the script user (cron user) but not by the world.
-  
+
+### sftp keys
+the script uses sftp to transport the files to your backup server. If you get an error `No hostkey for host ***** found` you can fix this by using sftp in your terminal to access the backup server. This will save the hostkey, the error should be gone after that. 
+Using a key tho access the backuop server, you will also need the webservers public key in the .ssh directory of the backup server. 
+
 ### backup steps
 The file `etc/backupcommands.conf` should contain all steps your backup needs to do, as if you were typing them in on the commandline. They might look like this: 
 ```commandline
-mysqldump class --single-transaction --add-drop-table > $BACKUPDIR/class.sql
+mysqldump mydbname --single-transaction --add-drop-table > $BACKUPDIR/mydbname.sql
 ```
 Make sure you define the directories in your backup.conf.
     
