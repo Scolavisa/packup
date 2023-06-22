@@ -18,6 +18,9 @@ Both should be readable/writable by the script user (cron user) but not by the w
 the script uses sftp to transport the files to your backup server. If you get an error `No hostkey for host ***** found` you can fix this by using sftp in your terminal to access the backup server. This will save the hostkey, the error should be gone after that. 
 When using a key to access the backup server, you will also need the webservers public key in the .ssh directory of the backup server. 
 
+If you want to use priv/public key connection, you should leave out a pw entry in the backup.conf, and instead add a privkey entry and a path to the knownhosts file. 
+To Use UN/PW, simply add those credentials in the conf file, any key entries will be ignored. 
+
 ### backup steps
 The file `etc/backupcommands.conf` should contain all steps your backup needs to do, as if you were typing them in on the commandline. They might look like this: 
 ```commandline
