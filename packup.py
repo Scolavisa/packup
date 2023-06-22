@@ -25,8 +25,7 @@ def main():
 
     FTPCRED = config["FTP"]
     # if we have a PW we use that to connect, otherwise we need a private key
-    if FTPCRED["PRIVKEY"] is not None:
-
+    if FTPCRED["PW"] is None:
         cnopts = pysftp.CnOpts()
         cnopts.hostkeys.load(FTPCRED["KNOWNHOSTS"])
 
