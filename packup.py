@@ -24,16 +24,26 @@ def main():
     logging.info("************************************* Start Process")
 
     FTPCRED = config["FTP"]
-    cnopts = pysftp.CnOpts()
-    cnopts.hostkeys.load(FTPCRED["KNOWNHOSTS"])
+    # if we have a PW we use that to connect, otherwise we need a private key
+    if FTPCRED["PRIVKEY"]:
 
-    # Create SFTP  connection
-    sftp = pysftp.Connection(
-        host=FTPCRED["HOST"],
-        username=FTPCRED["UN"],
-        private_key=FTPCRED["PRIVKEY"],
-        cnopts=cnopts
-    )
+        cnopts = pysftp.CnOpts()
+        cnopts.hostkeys.load(FTPCRED["KNOWNHOSTS"])
+
+        # Create SFTP  connection
+        sftp = pysftp.Connection(
+            host=FTPCRED["HOST"],
+            username=FTPCRED["UN"],
+            private_key=FTPCRED["PRIVKEY"],
+            cnopts=cnopts
+        )
+    else:
+        sftp = pysftp.Connection(
+            host=FTPCRED["HOST"],
+            username=FTPCRED["UN"],
+            password=FTPCRED["PW"],
+        )
+
     # Go to the correct directory for the duration of this connection
     sftp.cwd(FTPCRED["USEDIR"])
 
