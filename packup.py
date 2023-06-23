@@ -51,6 +51,7 @@ def main():
         .do_backup()\
         .package_backup()\
         .encrypt()\
+        .split()\
         .send_to_backupserver()
 
     # Retention section

@@ -41,6 +41,7 @@ class Backup:
         # enable chaining
         return self
 
+
     def encrypt(self):
         self.logger.info("Encrypt backup file")
         today = date.today()
@@ -55,6 +56,24 @@ class Backup:
         subprocess.call(line, shell=True)
         # remove unencrypted file
         os.unlink("{transpdir}/{hostname}.backup.tar.gz".format(transpdir=self.settings["TRANSPORTDIR"], hostname=hostname))
+        # enable chaining
+        return self
+
+    # split resulting backup file into chunks
+    def split(self):
+        self.logger.info("Split backup file into chunks")
+        today = date.today()
+        now = d1 = today.strftime("%Y-%m-%d")
+        hostname = socket.gethostname()
+        line = "split -b {chunksize} {transpdir}/backup-{now}{hostname}.tar.gz.aes {transpdir}/backup-{now}{hostname}.tar.gz.aes.chunk".format(
+            chunksize=self.settings["CHUNKSIZE"],
+            transpdir=self.settings["TRANSPORTDIR"],
+            now=now,
+            hostname=hostname,
+        )
+        subprocess.call(line, shell=True)
+        # remove input file
+        os.unlink("{transpdir}/backup-{now}{hostname}.tar.gz.aes".format(transpdir=self.settings["TRANSPORTDIR"], now=now, hostname=hostname))
         # enable chaining
         return self
 

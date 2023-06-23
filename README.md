@@ -14,8 +14,22 @@ Most importantly: your config needs to have a BACKUPDIR and a TRANSPORTDIR.
 
 Both should be readable/writable by the script user (cron user) but not by the world.
 
+The backup will be chunked into separate files, you need to add CHUCKSIZE config parameter to your config. There is no default.
+
 ### sftp keys
-the script uses sftp to transport the files to your backup server. If you get an error `No hostkey for host ***** found` you can fix this by using sftp in your terminal to access the backup server. This will save the hostkey, the error should be gone after that. 
+the script uses sftp to transport the files to your backup server. If you get an error `No hostkey for host ***** found` you can fix this by using sftp in your terminal to access the backup server. 
+```bash
+$ sftp user@backupserver
+The authenticity of host '.... (....ip....)' can't be established.
+RSA key fingerprint is SHA256:...j38Z3I9c.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '....., ip' (RSA) to the list of known hosts.
+Welcome to the STACK SFTP server
+......'s password: 
+Connected to .....
+sftp> exit
+```
+This will save the hostkey, the error should be gone after that. 
 When using a key to access the backup server, you will also need the webservers public key in the .ssh directory of the backup server. 
 
 If you want to use priv/public key connection, you should leave out a pw entry in the backup.conf, and instead add a privkey entry and a path to the knownhosts file. 
