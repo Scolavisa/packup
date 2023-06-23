@@ -1,11 +1,28 @@
 from datetime import date
 
 class Retention:
-    def __init__(self, ftp_connection, logger, config):
-        self.ftpconn = ftp_connection
+    def __init__(self, sftp_connection, logger, config):
+        self.sftpconn = sftp_connection
         self.logger = logger
-        self.settings = config
+        self.sftpsettings = config["FTP"]
+        self.backupsettings = config["BACKUP"]
 
+    # execute retention scheme as configured in config file
+    def doRetentionScheme(self) -> None:
+        # check if we need to delete remote files due to retention
+        if self.backupsettings["RETENTIONSCHEME"] == 'NONE':
+            self.logger.info("Skipping retention, no scheme defined in config")
+        else:
+            if self.backupsettings["RETENTIONSCHEME"] == "OLDERTHANNROFDAYS" and \
+                    self.backupsettings["RETENTIONDAYS"] is not None:
+                        self.remove_older_than(self.backupsettings["RETENTIONDAYS"])
+
+            # todo implement other retention schemes
+            # elif self.backupsettings["RETENTIONSCHEME"] == "LASTNBACKUPS" and \
+            #        self.backupsettings["RETENTIONBACKUPS"] is not None:
+            #            self.remove_last_n_backups(self.backupsettings["RETENTIONBACKUPS"])
+            else:
+                self.logger.info("Retention scheme {} not implemented".format(self.backupsettings["RETENTIONSCHEME"]))
 
     def remove_older_than(self, days) -> None:
         """
@@ -15,9 +32,9 @@ class Retention:
         """
         self.logger.info("*** Retention scheme: remove older than {} days".format(days))
         self.logger.info("Read file list")
-        file_list = self.ftpconn.listdir()
+        file_list = self.sftpconn.listdir()
 
-        if self.settings["DRYRUN"] == "True":
+        if self.sftpsettings["DRYRUN"] == "True":
             self.logger.info("Dryrun set to true, not deleting indicated files")
 
         self.logger.info("Found {} files in the current server directory".format(len(file_list)))
@@ -35,8 +52,8 @@ class Retention:
                 if diff.days >= days:
                     # delete this file
                     self.logger.info("File {} will be deleted".format(file_name))
-                    if not self.settings["DRYRUN"] == "True":
-                        self.ftpconn.remove(file_name)
+                    if not self.sftpsettings["DRYRUN"] == "True":
+                        self.sftpconn.remove(file_name)
                 else:
                     self.logger.debug("File will NOT be deleted")
 
